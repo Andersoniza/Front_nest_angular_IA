@@ -19,25 +19,39 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if (typeof window !== 'undefined' && localStorage.getItem('authToken')) {
-      this.loginForm.get('rememberMe')?.setValue(true);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const savedEmail = localStorage.getItem('savedEmail');
+      const savedPassword = localStorage.getItem('savedPassword');
+      const rememberMe = localStorage.getItem('rememberMe') === 'true';
+  
+      if (savedEmail && savedPassword && rememberMe) {
+        this.loginForm.patchValue({
+          email: savedEmail,
+          password: savedPassword,
+          rememberMe: true
+        });
+      }
     }
   }
-
+  
   funIngresar() {
     const rememberMe = this.loginForm.get('rememberMe')?.value;
+  
     this.authService.loginConNest(this.loginForm.value).subscribe(
       (res) => {
         console.log(res);
-        const tokenExpirationTime = rememberMe ? 2 * 60 * 1000 : 1 * 60 * 1000; 
-        this.startTimer(tokenExpirationTime);
-  
 
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && window.localStorage) {
           if (rememberMe) {
-            localStorage.setItem('authToken', res.token); 
+            localStorage.setItem('authToken', res.token);
+            localStorage.setItem('savedEmail', this.loginForm.get('email')?.value || '');
+            localStorage.setItem('savedPassword', this.loginForm.get('password')?.value || '');
+            localStorage.setItem('rememberMe', 'true');
           } else {
-            sessionStorage.setItem('authToken', res.token); 
+            sessionStorage.setItem('authToken', res.token);
+            localStorage.removeItem('savedEmail');
+            localStorage.removeItem('savedPassword');
+            localStorage.setItem('rememberMe', 'false');
           }
         }
   
@@ -48,17 +62,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-  
-  startTimer(expirationTime: number) {
-    let timer = expirationTime / 1000;
-    const interval = setInterval(() => {
-      console.log(`Tiempo restante: ${timer} segundos`);
-      timer--;
-  
-      if (timer < 0) {
-        clearInterval(interval);
-        console.log('El token ha expirado');
-      }
-    }, 1000);
-  }}
-  
+}

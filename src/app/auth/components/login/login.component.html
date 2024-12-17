@@ -31,14 +31,19 @@
 
           <div class="flex align-items-center">
             <input type="checkbox" id="rememberme" formControlName="rememberMe" />
-            <label for="rememberme">Recuerdame</label>
+            <label for="rememberme">Recuérdame</label>
           </div>
           
-            <a routerLink="/auth/forgot-password" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">¿Olvidaste la contraseña?</a>
-          </div>
+          <a routerLink="/auth/forgot-password" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">¿Olvidaste la contraseña?</a>
+        </div>
 
-          <button type="submit" [disabled]="!loginForm.valid" class="w-full p-3 text-xl" style="background-color: var(--primary-color)">Ingresar</button>
+        <button type="submit" [disabled]="!loginForm.valid" class="w-full p-3 text-xl" style="background-color: var(--primary-color)">Ingresar</button>
+
+        <div class="text-center mt-3">
+          <span class="text-600">¿No tienes una cuenta?</span>
+          <a routerLink="/auth/register" class="font-medium no-underline ml-2 cursor-pointer" style="color: var(--primary-color)">Regístrate</a>
         </div>
       </div>
     </div>
+  </div>
 </form>

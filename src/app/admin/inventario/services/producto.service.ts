@@ -10,7 +10,7 @@ export class ProductoService {
   private http=inject(HttpClient)
 
   funListar2(){
-    return this.http.get(`${this.baseUrl}/producto/back`)
+    return this.http.get(`${this.baseUrl}/producto/back`,{headers:{'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6I…Dg0fQ.CRUBJ_tMKDa7cKs61BzhB-vlOWjfzsug5hexk0KM2NE'}})
   }
 
 }
